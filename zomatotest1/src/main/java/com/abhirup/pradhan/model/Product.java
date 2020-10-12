@@ -9,9 +9,9 @@ public class Product {
 	private int product_Id;
 	private String product_Name;
 	private String product_Description;
-	private int product_Price;
+	private double product_Price;
 	@ManyToMany
-	private List<Restaurant> restuarant = new ArrayList<Restaurant>();
+	private Set<Restaurant> restaurant = new HashSet<Restaurant>();
 	public int getProduct_Id() {
 		return product_Id;
 	}
@@ -21,6 +21,7 @@ public class Product {
 	public String getProduct_Name() {
 		return product_Name;
 	}
+	
 	public void setProduct_Name(String product_Name) {
 		this.product_Name = product_Name;
 	}
@@ -30,23 +31,17 @@ public class Product {
 	public void setProduct_Description(String product_Description) {
 		this.product_Description = product_Description;
 	}
-	public int getProduct_Price() {
+	public double getProduct_Price() {
 		return product_Price;
 	}
-	public void setProduct_Price(int product_Price) {
+	public void setProduct_Price(double product_Price) {
 		this.product_Price = product_Price;
 	}
-	public List<Restaurant> getRestuarant() {
-		return restuarant;
+	public Set<Restaurant> getRestaurant() {
+		return restaurant;
 	}
-	public void setRestuarant(List<Restaurant> restuarant) {
-		this.restuarant = restuarant;
-	}
-	@Override
-	public String toString() {
-		return "Product [product_Id=" + product_Id + ", product_Name=" + product_Name + ", product_Description="
-				+ product_Description + ", product_Price=" + product_Price
-				+ ", restuarant=" + restuarant + "]";
+	public void setRestaurant(Set<Restaurant> restuarant) {
+		this.restaurant = restuarant;
 	}
 	
 }

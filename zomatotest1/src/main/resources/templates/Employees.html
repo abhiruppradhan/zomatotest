@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>ALL CUSTOMERS</title>
+</head>
+<body>
+		<table border="1px solid black">
+			<tr th:each = "employee : ${employees}">
+				<td th:text = "${employee.employee_Id}"></td>
+				<td th:text = "${employee.employee_Name}"></td>
+				<td th:text = "${employee.employee_Phn}"></td>
+				<td th:text = "${employee.employee_Location}"></td>
+				<td th:text = "${employee.stars}"></td>
+				<td th:text = "${employee.active}"></td>
+				<td th:text = "${employee.employee_Password}"></td>
+			</tr>
+		</table>
+</body>
+</html>

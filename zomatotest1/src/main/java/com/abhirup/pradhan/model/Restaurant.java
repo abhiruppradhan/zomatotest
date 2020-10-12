@@ -6,25 +6,29 @@ import javax.persistence.*;
 @Entity
 public class Restaurant {
 	@Id
-	private int restaurant_Id;
+	private String restaurant_Id;
 	private String restaurant_Name;
 	private String restaurant_Address;
-	private int restaurant_Phn;
-	@ManyToMany(mappedBy="Product")
-	private List<Product> restaurant_Products = new ArrayList<Product>();
+	@Column(length=10)
+	private String restaurant_Phn;
+	@ManyToMany(mappedBy="restaurant")
+	private Set<Product> product = new HashSet<Product>();
+	@OneToMany(mappedBy="restaurant")
+	private Set<OrderDet> orderdet = new HashSet<OrderDet>();
 	private int restaurant_Open;
-	
-	@Override
-	public String toString() {
-		return "Restaurant [restaurant_Id=" + restaurant_Id + ", restaurant_Name=" + restaurant_Name
-				+ ", restaurant_Address=" + restaurant_Address + ", restaurant_Phn=" + restaurant_Phn
-				+ ", restaurant_Products=" + restaurant_Products + ", restaurant_Open=" + restaurant_Open + "]";
-	}
-	
-	public int getRestaurant_Id() {
+	public String getRestaurant_Id() {
 		return restaurant_Id;
 	}
-	public void setRestaurant_Id(int restaurant_Id) {
+	
+	public Set<OrderDet> getOrderdet() {
+		return orderdet;
+	}
+
+	public void setOrderdet(Set<OrderDet> orderdet) {
+		this.orderdet = orderdet;
+	}
+
+	public void setRestaurant_Id(String restaurant_Id) {
 		this.restaurant_Id = restaurant_Id;
 	}
 	public String getRestaurant_Name() {
@@ -39,23 +43,31 @@ public class Restaurant {
 	public void setRestaurant_Address(String restaurant_Address) {
 		this.restaurant_Address = restaurant_Address;
 	}
-	public int getRestaurant_Phn() {
+	public String getRestaurant_Phn() {
 		return restaurant_Phn;
 	}
-	public void setRestaurant_Phn(int restaurant_Phn) {
+	public void setRestaurant_Phn(String restaurant_Phn) {
 		this.restaurant_Phn = restaurant_Phn;
 	}
-	public List<Product> getRestaurant_Products() {
-		return restaurant_Products;
+	public Set<Product> getproducts() {
+		return product;
 	}
-	public void setRestaurant_Products(List<Product> restaurant_Products) {
-		this.restaurant_Products = restaurant_Products;
+	public void setproducts(Set<Product> product) {
+		this.product = product;
 	}
 	public int getRestaurant_Open() {
 		return restaurant_Open;
 	}
 	public void setRestaurant_Open(int restaurant_Open) {
 		this.restaurant_Open = restaurant_Open;
+	}
+
+	public Set<Product> getProduct() {
+		return product;
+	}
+
+	public void setProduct(Set<Product> product) {
+		this.product = product;
 	}
 	
 }

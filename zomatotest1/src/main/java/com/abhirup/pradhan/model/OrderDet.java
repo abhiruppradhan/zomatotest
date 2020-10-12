@@ -3,20 +3,23 @@ package com.abhirup.pradhan.model;
 import javax.persistence.*;
 import java.util.*;
 @Entity
-public class Order {
+public class OrderDet {
 	@Id
 	private int order_Id;
+	private Date date;
+	private int delivery;
+	private double price;
 	@ManyToOne
+	@JoinColumn(name="customer_Id")
 	private Customer customer;
 	@ManyToOne
+	@JoinColumn(name="restaurant_Id")
 	private Restaurant restaurant;
 	@OneToMany
-	private List<Product> product = new ArrayList<Product>();
-	private Date date;
+	private Set<Product> product = new HashSet<Product>();
 	@ManyToOne
+	@JoinColumn(name="employee_Id")
 	private Employee employee;
-	private int delivery;
-	private int price;
 	public int getOrder_Id() {
 		return order_Id;
 	}
@@ -35,10 +38,10 @@ public class Order {
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
-	public List<Product> getProduct() {
+	public Set<Product> getProduct() {
 		return product;
 	}
-	public void setProduct(List<Product> product) {
+	public void setProduct(Set<Product> product) {
 		this.product = product;
 	}
 	public Date getDate() {
@@ -59,17 +62,13 @@ public class Order {
 	public void setDelivery(int delivery) {
 		this.delivery = delivery;
 	}
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
-	@Override
-	public String toString() {
-		return "Order [order_Id=" + order_Id + ", customer=" + customer + ", restaurant=" + restaurant + ", product="
-				+ product + ", date=" + date + ", employee=" + employee + ", delivery=" + delivery + ", price=" + price
-				+ "]";
-	}
+
 	
 }
+
