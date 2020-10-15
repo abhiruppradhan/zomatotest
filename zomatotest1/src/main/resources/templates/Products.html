@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>ALL CUSTOMERS</title>
+</head>
+<body>
+		<table border = "1px solid black">
+			<tr th:each = "product : ${products}">
+				<td th:text = "${product.product_Id}"></td>
+				<td th:text = "${product.product_Name}"></td>
+				<td th:text = "${product.product_Description}"></td>
+				<td th:text = "${product.product_Price}"></td>
+				<td th:text = "${product.product_Offer}"></td>
+				<td th:text = "${product.product_Count}"></td>
+				<td><a th:href ="@{editproduct1(id=${product.product_Id})}">EDIT</a></td>
+				<td><a th:href = "@{deleteproduct(id=${product.product_Id})}">DELETE</a></td>
+			</tr>
+		</table>
+</body>
+</html>

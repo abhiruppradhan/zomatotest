@@ -1,6 +1,7 @@
 package com.abhirup.pradhan.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,26 @@ public class ProductService {
 		proRepo.save(product);
 	}
 	
+	public void deleteProduct(Set<Product> products) {
+		for(Product p : products) {
+			proRepo.delete(p);
+		}
+	}
+	
+	public void deleteOneproduct(int id) {
+		proRepo.deleteById(id);;
+	}
+	
 	public List<Product> getProducts(){
 		return proRepo.findAll();
 	}
 	
 	public Product getProduct(int id) {
 		return proRepo.getOne(id);
+	}
+	
+	public long getProductCount() {
+		return proRepo.count();
 	}
 
 }

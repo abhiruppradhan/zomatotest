@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>CUSTOMER REGISTRATION</title>
+</head>
+<body>
+	<form th:action = "@{(${act4})(product_Id=${product.product_Id})}" method = "post">
+		<table>
+			<tr>
+				<td>PRODUCT NAME</td>
+				<td><input type = "text" name ="product_Name" th:value="${product.product_Name}"></td>
+			</tr>
+			<tr>
+				<td>PRODUCT DESCRIPTION</td>
+				<td><input type = "text" name ="product_Description" th:value="${product.product_Description}"></td>
+			</tr>
+			<tr>
+				<td>PRODUCT PRICE</td>
+				<td><input type = "text" name ="product_Price" th:value="${product.product_Price}"></td>
+			</tr>
+			<tr>
+				<td>PRODUCT OFFER</td>
+				<td><input type = "text" name ="product_Offer" th:value="${product.product_Offer}"></td>
+			</tr>
+			<tr>
+				<td>PRODUCT COUNT</td>
+				<td><input type = "text" name ="product_Count" th:value="${product.product_Count}"></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="Submit"></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

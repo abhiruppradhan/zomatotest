@@ -22,6 +22,10 @@ public class CustomerService {
 		crepo.save(cus);
 	}
 	
+	public void deleteCustomer(String id) {
+		crepo.deleteById(id);
+	}
+	
 	public Customer getCustomer(String id) {
 		Customer cus = crepo.getValueByCustomer_Id(id);
 		if(cus != null) {

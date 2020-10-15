@@ -5,6 +5,7 @@ import java.util.*;
 @Entity
 public class OrderDet {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int order_Id;
 	private Date date;
 	private int delivery;

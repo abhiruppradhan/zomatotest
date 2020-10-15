@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>ALL CUSTOMERS</title>
+</head>
+<body>
+	<form th:action = "@{(${act3})}" method ="post">
+		<table>
+		<tr>
+			<td>RESAURANT EMAIL ID</td>
+			<td><input type="email" name="restaurant_Id" th:value = "${rest.restaurant_Id}"></td>
+		</tr>
+		<tr>
+			<td>RESAURANT NAME</td>
+			<td><input type="text" name="restaurant_Name" th:value = "${rest.restaurant_Name}"></td>
+		</tr>
+		<tr>
+			<td>RESAURANT ADDRESS</td>
+			<td><input type="text" name="restaurant_Address" th:value = "${rest.restaurant_Address}"></td>
+		</tr>
+		<tr>
+			<td>RESAURANT PHONE NUMBER</td>
+			<td><input type="text" name="restaurant_Phn"  th:value = "${rest.restaurant_Phn}"></td>
+		</tr>
+		<tr>
+			<td>RESAURANT PASSWORD</td>
+			<td><input type="text" name="restaurant_Password" th:value = "${rest.restaurant_Password}"></td>
+		</tr>
+		<tr>
+			<td><input type="submit" value = "Submit"></td>
+		</tr>
+		</table>
+	</form>
+</body>
+</html>

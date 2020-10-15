@@ -9,9 +9,10 @@ public class Restaurant {
 	private String restaurant_Id;
 	private String restaurant_Name;
 	private String restaurant_Address;
+	private String restaurant_Password;
 	@Column(length=10)
 	private String restaurant_Phn;
-	@ManyToMany(mappedBy="restaurant")
+	@OneToMany
 	private Set<Product> product = new HashSet<Product>();
 	@OneToMany(mappedBy="restaurant")
 	private Set<OrderDet> orderdet = new HashSet<OrderDet>();
@@ -49,12 +50,6 @@ public class Restaurant {
 	public void setRestaurant_Phn(String restaurant_Phn) {
 		this.restaurant_Phn = restaurant_Phn;
 	}
-	public Set<Product> getproducts() {
-		return product;
-	}
-	public void setproducts(Set<Product> product) {
-		this.product = product;
-	}
 	public int getRestaurant_Open() {
 		return restaurant_Open;
 	}
@@ -68,6 +63,14 @@ public class Restaurant {
 
 	public void setProduct(Set<Product> product) {
 		this.product = product;
+	}
+
+	public String getRestaurant_Password() {
+		return restaurant_Password;
+	}
+
+	public void setRestaurant_Password(String restaurant_Password) {
+		this.restaurant_Password = restaurant_Password;
 	}
 	
 }

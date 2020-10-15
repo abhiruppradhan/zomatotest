@@ -12,6 +12,8 @@
 				<td th:text = "${customer.customer_Phn}"></td>
 				<td th:text = "${customer.customer_Address}"></td>
 				<td th:text = "${customer.customer_Password}"></td>
+				<td><a th:href ="@{editcustomer1(id=${customer.customer_Id})}">EDIT</a></td>
+				<td><a th:href = "@{deletecustomer(id=${customer.customer_Id})}">DELETE</a></td>
 			</tr>
 		</table>
 </body>

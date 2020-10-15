@@ -1,17 +1,17 @@
 package com.abhirup.pradhan.model;
 import javax.persistence.*;
 
-import java.util.*;
 
 @Entity
 public class Product {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int product_Id;
 	private String product_Name;
 	private String product_Description;
 	private double product_Price;
-	@ManyToMany
-	private Set<Restaurant> restaurant = new HashSet<Restaurant>();
+	private double product_Offer;
+	private int product_Count;
 	public int getProduct_Id() {
 		return product_Id;
 	}
@@ -37,11 +37,16 @@ public class Product {
 	public void setProduct_Price(double product_Price) {
 		this.product_Price = product_Price;
 	}
-	public Set<Restaurant> getRestaurant() {
-		return restaurant;
+	public double getProduct_Offer() {
+		return product_Offer;
 	}
-	public void setRestaurant(Set<Restaurant> restuarant) {
-		this.restaurant = restuarant;
+	public void setProduct_Offer(double product_Offer) {
+		this.product_Offer = product_Offer;
 	}
-	
+	public int getProduct_Count() {
+		return product_Count;
+	}
+	public void setProduct_Count(int product_Count) {
+		this.product_Count = product_Count;
+	}
 }

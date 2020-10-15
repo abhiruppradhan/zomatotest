@@ -14,6 +14,8 @@
 				<td th:text = "${employee.stars}"></td>
 				<td th:text = "${employee.active}"></td>
 				<td th:text = "${employee.employee_Password}"></td>
+				<td><a th:href ="@{editemployee1(id=${employee.employee_Id})}">EDIT</a></td>
+				<td><a th:href = "@{deleteemployee(id=${employee.employee_Id})}">DELETE</a></td>
 			</tr>
 		</table>
 </body>

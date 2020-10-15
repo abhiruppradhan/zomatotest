@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://thymleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>ALL CUSTOMERS</title>
 </head>
 <body>
-	<form action = "createemployee" method ="post">
+	<form th:action = "@{(${act2})}" method ="post">
 		<table>
 			<tr>
 				<td>EMPLOYEE EMAIL</td>
-				<td><input type = "email" name = "employee_Id"></td>
+				<td><input type = "email" name = "employee_Id" th:value="${employee.employee_Id}"></td>
 			</tr>
 			<tr>
 				<td>EMPLOYEE NAME</td>
-				<td><input type = "text" name = "employee_Name"></td>
+				<td><input type = "text" name = "employee_Name"  th:value="${employee.employee_Name}"></td>
 			</tr>
 			<tr>
 				<td>EMPLOYEE PHONE NUMBER</td>
-				<td><input type = "text" name = "employee_Phn"></td>
+				<td><input type = "text" name = "employee_Phn"  th:value="${employee.employee_Phn}"></td>
 			</tr>
 			<tr>
 				<td>EMPLOYEE ADDRESS</td>
-				<td><input type = "text" name = "employee_Address"></td>
+				<td><input type = "text" name = "employee_Address"  th:value="${employee.employee_Address}"></td>
 			</tr>
 			<tr>
 				<td>EMPLOYEE PASSWORD</td>
-				<td><input type = "text" name = "employee_Password"></td>
+				<td><input type = "text" name = "employee_Password"  th:value="${employee.employee_Password}"></td>
 			</tr>
 			<tr>
 				<td><input type = "submit" value = "Submit"></td>

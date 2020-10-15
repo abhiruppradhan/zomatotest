@@ -21,6 +21,10 @@ public class EmployeeService {
 		empRepo.save(emp);
 	}
 	
+	public void deleteEmployee(String id) {
+		empRepo.deleteById(id);
+	}
+	
 	public Employee getEmployee(String id) {
 		Employee emp = empRepo.getValueByEmployee_Id(id);
 		if(emp != null) {
