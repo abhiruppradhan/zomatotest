@@ -17,6 +17,16 @@ public class Restaurant {
 	@OneToMany(mappedBy="restaurant")
 	private Set<OrderDet> orderdet = new HashSet<OrderDet>();
 	private int restaurant_Open;
+	private int active;
+	
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
+	}
+
 	public String getRestaurant_Id() {
 		return restaurant_Id;
 	}

@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.abhirup.pradhan.model.OrderDet;
 
-public interface OrderRepo extends JpaRepository<OrderDet, Integer> {
+public interface OrderRepo extends JpaRepository<OrderDet, Long> {
 
 }

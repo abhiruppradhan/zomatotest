@@ -5,17 +5,23 @@ import javax.persistence.*;
 @Entity
 public class Product {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int product_Id;
+	private long product_Id;
 	private String product_Name;
 	private String product_Description;
 	private double product_Price;
 	private double product_Offer;
 	private int product_Count;
-	public int getProduct_Id() {
+	private int active;
+	public int getActive() {
+		return active;
+	}
+	public void setActive(int active) {
+		this.active = active;
+	}
+	public long getProduct_Id() {
 		return product_Id;
 	}
-	public void setProduct_Id(int product_Id) {
+	public void setProduct_Id(long product_Id) {
 		this.product_Id = product_Id;
 	}
 	public String getProduct_Name() {

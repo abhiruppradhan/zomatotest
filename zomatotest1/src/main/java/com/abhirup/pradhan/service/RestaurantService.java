@@ -1,12 +1,10 @@
 package com.abhirup.pradhan.service;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.abhirup.pradhan.model.Product;
 import com.abhirup.pradhan.model.Restaurant;
 import com.abhirup.pradhan.repository.RestaurantRepo;
 
@@ -16,6 +14,7 @@ public class RestaurantService {
 	private RestaurantRepo restRepo;
 	
 	public void addRestaurant(Restaurant restaurant) {
+		restaurant.setActive(1);
 		restRepo.save(restaurant);
 	}
 	
@@ -25,7 +24,9 @@ public class RestaurantService {
 	
 	
 	public void deleteRestaurant(String id) {
-		restRepo.deleteById(id);
+		Restaurant rest = getRestaurant(id);
+		rest.setActive(0);
+		restRepo.save(rest);
 	}
 	
 	public List<Restaurant> getRestaurants(){

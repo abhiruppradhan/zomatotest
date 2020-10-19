@@ -5,26 +5,26 @@ import java.util.*;
 @Entity
 public class OrderDet {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int order_Id;
+	private long order_Id;
 	private Date date;
 	private int delivery;
 	private double price;
+	private int canceled;
 	@ManyToOne
 	@JoinColumn(name="customer_Id")
 	private Customer customer;
 	@ManyToOne
 	@JoinColumn(name="restaurant_Id")
 	private Restaurant restaurant;
-	@OneToMany
+	@ManyToMany
 	private Set<Product> product = new HashSet<Product>();
 	@ManyToOne
 	@JoinColumn(name="employee_Id")
 	private Employee employee;
-	public int getOrder_Id() {
+	public long getOrder_Id() {
 		return order_Id;
 	}
-	public void setOrder_Id(int order_Id) {
+	public void setOrder_Id(long order_Id) {
 		this.order_Id = order_Id;
 	}
 	public Customer getCustomer() {
@@ -62,6 +62,12 @@ public class OrderDet {
 	}
 	public void setDelivery(int delivery) {
 		this.delivery = delivery;
+	}
+	public int getCanceled() {
+		return canceled;
+	}
+	public void setCanceled(int canceled) {
+		this.canceled = canceled;
 	}
 	public double getPrice() {
 		return price;

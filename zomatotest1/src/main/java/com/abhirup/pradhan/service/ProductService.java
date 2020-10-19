@@ -15,6 +15,8 @@ public class ProductService {
 	private ProductRepo proRepo;
 	
 	public void addProduct(Product product) {
+		product.setProduct_Id(proRepo.count()+1);
+		product.setActive(1);
 		proRepo.save(product);
 	}
 	
@@ -24,11 +26,12 @@ public class ProductService {
 	
 	public void deleteProduct(Set<Product> products) {
 		for(Product p : products) {
-			proRepo.delete(p);
+			p.setActive(0);
+			proRepo.save(p);
 		}
 	}
 	
-	public void deleteOneproduct(int id) {
+	public void deleteOneproduct(long id) {
 		proRepo.deleteById(id);;
 	}
 	
@@ -36,12 +39,7 @@ public class ProductService {
 		return proRepo.findAll();
 	}
 	
-	public Product getProduct(int id) {
+	public Product getProduct(long id) {
 		return proRepo.getOne(id);
 	}
-	
-	public long getProductCount() {
-		return proRepo.count();
-	}
-
 }

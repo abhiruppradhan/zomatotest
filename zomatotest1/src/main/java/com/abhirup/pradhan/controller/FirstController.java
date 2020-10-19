@@ -1,19 +1,14 @@
 package com.abhirup.pradhan.controller;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,7 +28,11 @@ public class FirstController {
 	private ProductService proS;
 	@Autowired
 	private RestaurantService resS;
+	@Autowired
+	private OrderService ordS;
 	
+	Set<Product> productslist;
+	Restaurant restaurant;
 	
 	/*****************************Cookie***************************/
 	
@@ -148,6 +147,81 @@ public class FirstController {
 		Product pro = proS.getProduct(id);
 		mv.addObject("product", pro);
 		mv.addObject("act4","editproduct");
+		return mv;
+	}
+	
+	@RequestMapping("/allrestaurant")
+	public ModelAndView index14(ModelAndView mv) {
+		mv.setViewName("AllRestaurants");
+		mv.addObject("restaurants", resS.getRestaurants());
+		return mv;
+	}
+	
+	@GetMapping("/listoffood")
+	public ModelAndView index15(String id , ModelAndView mv) {
+		mv.setViewName("Foods");
+		restaurant = resS.getRestaurant(id);
+		mv.addObject("products", restaurant.getProduct());
+		productslist = new HashSet<Product>();
+		return mv;
+	}
+	
+	@GetMapping("/addptoord")
+	public ModelAndView index16(int id , ModelAndView mv) {
+		mv.setViewName("Order");
+		Product product = proS.getProduct(id);
+		boolean exist = false;
+		for ( Product p : productslist) {
+			if(p.getProduct_Id() == product.getProduct_Id()) {
+				exist = true;
+				break;
+			}
+		}
+		if(!exist) {
+			productslist.add(product);
+		}
+		mv.addObject("productlist", productslist);
+		double price=0;
+		for(Product p: productslist) 
+			price = price + p.getProduct_Price();
+		mv.addObject("price", price);
+		if(ordS.getOrders()==null) {
+			List<OrderDet> orders = new ArrayList<OrderDet>();
+			orders.add(new OrderDet());
+			mv.addObject("orderlist",orders);
+		}else {
+			mv.addObject("orderlist",ordS.getOrders());	
+		}
+		mv.addObject("orderlist",ordS.getOrders());
+		return mv;
+	}
+	
+	@RequestMapping("/order")
+	public ModelAndView orderProd(HttpServletRequest req){
+		Customer customer = new Customer();
+		Employee employee = new Employee();
+		try {
+			customer = cusS.getCustomer(getCookie(req,"cusid"));
+			employee = empS.getEmployee(getCookie(req,"empid"));
+		}catch(Exception e){
+			
+		}
+		OrderDet newOrder = new OrderDet();
+		newOrder.setRestaurant(restaurant);
+		newOrder.setCustomer(customer);
+		newOrder.setEmployee(employee);
+		newOrder.setDate(new Date());
+		newOrder.setProduct(productslist);
+		double price=0;
+		for(Product p: productslist) 
+			price = price + p.getProduct_Price();
+		newOrder.setPrice(price);
+		ordS.addOrder(newOrder);
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("Order");
+		mv.addObject("productslist", new HashSet<Product>());
+		mv.addObject("price",0);
+		mv.addObject("orderlist",ordS.getOrders());
 		return mv;
 	}
 	/********************************get details and add details************************/

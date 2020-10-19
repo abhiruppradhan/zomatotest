@@ -14,6 +14,7 @@ public class OrderService {
 	private OrderRepo orderRepo;
 	
 	public void addOrder(OrderDet neworder) {
+		neworder.setOrder_Id(orderRepo.count()+1);
 		orderRepo.save(neworder);
 	}
 	public void editOrder(OrderDet neworder) {
@@ -24,7 +25,7 @@ public class OrderService {
 		return orderRepo.findAll();
 	}
 	
-	public OrderDet getOrder(int id){
+	public OrderDet getOrder(long id){
 		return orderRepo.getOne(id);
 	}
 	

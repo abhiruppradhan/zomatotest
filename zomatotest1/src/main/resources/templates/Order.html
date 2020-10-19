@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<table border = "1px solid black">
+		<tr th:each="product : ${productlist}">
+			<td th:text="${product.product_Name}"></td>
+		</tr>
+		<tr><td th:text = "${price}"></td></tr>
+		<tr><td><a th:href="@{order}">ORDER</a><td></tr>
+	</table>
+	<br>
+	<br>
+	<table border = "1px solid black">
+		<tr th:each = "order : ${orderlist}">
+			<td th:text="${order.order_Id}"></td>
+			<td th:text="${order.date}"></td>
+			<td th:text="${order.delivery}"></td>
+			<td th:text="${order.price}"></td>
+			<td th:text="${order.canceled}"></td>
+			<td th:text="${order.customer.customer_Name}"></td>
+			<td th:text="${order.restaurant.restaurant_Name}"></td>
+			<td th:text="${order.employee.employee_Name}"></td>
+			<td>
+			<div th:each="prod : ${order.product}">
+				<p th:text = "${prod.product_Name}"></p>
+			</div>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<table>
+		<tr th:each="food : ${products}">
+			<td th:text = "${food.product_Name}"></td>
+			<td th:text = "${food.product_Price}"></td>
+			<td><a th:href ="@{addptoord(id = ${food.product_Id})}" >AddToOrderList</a></td>
+			<td></td>
+		</tr>
+	</table>
+</body>
+</html>
