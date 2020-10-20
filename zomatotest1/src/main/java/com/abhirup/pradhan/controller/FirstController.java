@@ -34,11 +34,34 @@ public class FirstController {
 	Set<Product> productslist;
 	Restaurant restaurant;
 	
+	/****************************adminlogin************************/
+	@RequestMapping("/Admin.html")
+	public ModelAndView admin(ModelAndView mv) {
+		mv.setViewName("Admin");
+		return mv;
+	}
+	@PostMapping("/adminlogin")
+	public ModelAndView adminlogin(String id,String pswd,HttpServletRequest req,HttpServletResponse res,ModelAndView mv) {
+		if(id.equals("abhirup@gmail.com") && pswd.equals("1234")) {
+			setCookie(res,"admin",id);
+		}
+		return index(mv,req);
+	}
+	
+	@RequestMapping("/adminlogout")
+	public ModelAndView adminlogout(HttpServletResponse res,HttpServletRequest req,ModelAndView mv) {
+		try {
+			deleteCookie(res,"admin");
+		}catch(Exception e) {
+			
+		}
+		return index(mv,req);
+	}
 	/*****************************Cookie***************************/
 	
 	public void setCookie(HttpServletResponse response, String id, String idval) {
 		Cookie cookie = new Cookie(id,idval);
-		cookie.setMaxAge(60*60);
+		cookie.setMaxAge(60*60*24*7);
 		response.addCookie(cookie);
 	}
 	
@@ -54,12 +77,233 @@ public class FirstController {
 	
 	/***************************login*****************************/
 	
+	/**********************customer login************************/
+
+	@PostMapping("/customerlogin")
+	public ModelAndView cusLogin(String emailid, String upswd ,ModelAndView mv,HttpServletResponse response,HttpServletRequest req) {
+		Customer customer = cusS.getCustomer(emailid);
+		if(customer!=null && emailid.equals(customer.getCustomer_Id()) && upswd.equals(customer.getCustomer_Password())) {
+			setCookie(response,"cusid",customer.getCustomer_Id());
+		}else {
+			mv.setViewName("rejection");
+		}
+		return index(mv,req);
+	}
 	
+	@GetMapping("/customerlogout")
+	public ModelAndView cusLogOut(ModelAndView mv,HttpServletResponse response, HttpServletRequest request) {
+		deleteCookie(response,"cusid");
+		return index(mv,request);
+	}
+	
+	
+	/**********************employee login************************/
+	@PostMapping("/employeelogin")
+	public ModelAndView empLogin(String emailid, String upswd ,ModelAndView mv,HttpServletResponse response,HttpServletRequest req) {
+		Employee employee = empS.getEmployee(emailid);
+		if(employee != null && emailid.equals(employee.getEmployee_Id()) && upswd.equals(employee.getEmployee_Password()) && (employee.getWorking()==1)) {
+			setCookie(response,"empid",employee.getEmployee_Id());
+			employee.setActive(1);
+			empS.addEmployee(employee);
+		}else {
+			mv.setViewName("rejection");
+		}
+		return index(mv,req);
+	}
+	
+	@GetMapping("/employeelogout")
+	public ModelAndView empLogout(ModelAndView mv,HttpServletResponse response, HttpServletRequest request) {
+		try {
+		String id = getCookie(request,"empid");
+		Employee emp = empS.getEmployee(id);
+		emp.setActive(0);
+		empS.addEmployee(emp);
+		}catch(Exception e){
+			
+		}
+		deleteCookie(response,"empid");
+		return index(mv,request);
+	}
+	
+	/**********************restaurant login**********************/
+	
+	@PostMapping("/restaurantlogin")
+	public ModelAndView restLogin(String emailid, String upswd ,ModelAndView mv,HttpServletResponse response,HttpServletRequest req) {
+		Restaurant rest = resS.getRestaurant(emailid);
+		if(rest != null && emailid.equals(rest.getRestaurant_Id()) && upswd.equals(rest.getRestaurant_Password()) && (rest.getActive()==1)) {
+			setCookie(response,"restid",rest.getRestaurant_Id());
+			rest.setRestaurant_Open(1);
+			resS.addRestaurant(rest);
+		}else {
+			mv.setViewName("rejection");
+		}
+		return index(mv,req);
+	}
+	
+	@GetMapping("/restaurantlogout")
+	public ModelAndView restLogOut(ModelAndView mv,HttpServletResponse response, HttpServletRequest request) {
+		try {
+		String id = getCookie(request,"restid");
+		Restaurant rest = resS.getRestaurant(id);
+		rest.setRestaurant_Open(0);
+		resS.addRestaurant(rest);
+		}catch(Exception e){
+			
+		}
+		deleteCookie(response,"restid");
+		return index(mv,request);
+	}	
+	/****************************customer**********************/
+	
+	@PostMapping("/createcustomer")
+	public void addCustomer(Customer customer) {
+		cusS.addCustomer(customer);
+	}
+	
+	@GetMapping("/getcustomers")
+	public ModelAndView getCustomers(ModelAndView mv) {
+		mv.setViewName("Customers");
+		mv.addObject("customers",cusS.getCustomers());
+		return mv;
+	}
+	
+	@PostMapping("/editcustomer")
+	public ModelAndView editCustomer(Customer customer,ModelAndView mv) {
+		cusS.editCustomer(customer);
+		return getCustomers(mv);
+	}
+	
+	@GetMapping("/deletecustomer")
+	public ModelAndView deleteCustomer(String id, ModelAndView mv) {
+		cusS.deleteCustomer(id);
+		return getCustomers(mv);
+	}	
+	/****************************employee**********************/
+
+	@PostMapping("/createemployee")
+	public void addEmployee(Employee employee) {
+		empS.addEmployee(employee);
+	}
+	
+	@GetMapping("/getemployees")
+	public ModelAndView getEmployees(ModelAndView mv) {
+		mv.setViewName("Employees");
+		mv.addObject("employees",empS.getEmployees());
+		return mv;
+	}
+
+	
+	@PostMapping("/editemployee")
+	public ModelAndView editEmp(Employee emp,ModelAndView mv) {
+		empS.editEmployee(emp);
+		return getEmployees(mv);
+	}
+	
+	@GetMapping("/deleteemployee")
+	public ModelAndView deleteEmp(String id, ModelAndView mv) {
+		empS.deleteEmployee(id);
+		return getEmployees(mv);
+	}
+	
+	/****************************restaurant********************/
+	
+	@PostMapping("/createrestaurant")
+	public void addRestaurant(Restaurant restaurant) {
+		resS.addRestaurant(restaurant);
+	}
+	
+	@GetMapping("/getrestaurants")
+	public ModelAndView getRestaurants(ModelAndView mv) {
+		mv.setViewName("Restaurants");
+		mv.addObject("restaurants",resS.getRestaurants());
+		return mv;
+	}
+	
+	@PostMapping("/editrestaurant")
+	public ModelAndView editRes(Restaurant res,ModelAndView mv) {
+		resS.editRestaurant(res);
+		return getRestaurants(mv);
+	}
+	
+	@GetMapping("/deleterestaurant")
+	public ModelAndView deleteRes(String id, ModelAndView mv) {
+		Set<Product> products = new HashSet<Product>(resS.getRestaurant(id).getProduct());
+		resS.deleteRestaurant(id);
+		proS.deleteProduct(products);
+		return getRestaurants(mv);
+	}	
+	/****************************product***********************/
+	
+	@PostMapping("/addproduct")
+	public void addProduct(Product product,HttpServletRequest req) {
+		try {
+			String rest = getCookie(req,"restid");
+			Restaurant restaurant = resS.getRestaurant(rest);
+			restaurant.getProduct().add(product);
+			proS.addProduct(product);
+			resS.addRestaurant(restaurant);
+		}catch(Exception e) {
+			
+		}
+	}
+	
+	@PostMapping("/editproduct")
+	public ModelAndView editProduct(Product product,ModelAndView mv,HttpServletRequest req) {
+		proS.editProduct(product);
+		return getProducts(req,mv);
+	}
+	
+	@GetMapping("/deleteproduct")
+	public ModelAndView deleteProduct(int id , ModelAndView mv, HttpServletRequest req) {
+		try {
+		Restaurant rest = resS.getRestaurant(getCookie(req,"restid"));
+		Product pro = proS.getProduct(id);
+		rest.getProduct().remove(pro);
+		resS.editRestaurant(rest);
+		proS.deleteOneproduct(id);
+		}catch(Exception e) {
+			
+		}
+		return getProducts(req,mv);
+	}
+	
+	@GetMapping("/getproducts")
+	public ModelAndView getProducts(HttpServletRequest req,ModelAndView mv) {
+		mv.setViewName("Products");
+		try {
+		String id = getCookie(req,"restid");
+		Restaurant rest = resS.getRestaurant(id);
+		mv.addObject("products",rest.getProduct());
+		}catch(Exception e) {
+		Restaurant rest = new Restaurant();
+		mv.addObject("products",rest.getProduct());
+		}
+		return mv;
+	}	
 	
 	/*****************************pages***********************/
+	
 	@RequestMapping("/")
-	public ModelAndView index(ModelAndView mv) {
+	public ModelAndView index(ModelAndView mv,HttpServletRequest req) {
 		mv.setViewName("index");
+		String cust="",emp="",rest="",admin="";
+		try {cust=getCookie(req,"cusid");}catch(Exception e) {}
+		try {emp=getCookie(req,"empid");}catch(Exception e) {}
+		try {rest=getCookie(req,"restid");}catch(Exception e) {}
+		try {admin=getCookie(req,"admin");}catch(Exception e) {}
+		boolean cust1=true,emp1=true,rest1=true,admin1=true;
+		if(cust.equals(""))
+			cust1=false;
+		if(emp.equals(""))
+			emp1=false;
+		if(rest.equals(""))
+			rest1=false;
+		if(admin.equals(""))
+			admin1=false;
+		mv.addObject("cust",cust1);
+		mv.addObject("emp",emp1);
+		mv.addObject("rest",rest1);
+		mv.addObject("admin",admin1);
 		return mv;
 	}
 	@RequestMapping("/CustomerLogin.html")
@@ -150,6 +394,7 @@ public class FirstController {
 		return mv;
 	}
 	
+/******************************** Order ********************************/
 	@RequestMapping("/allrestaurant")
 	public ModelAndView index14(ModelAndView mv) {
 		mv.setViewName("AllRestaurants");
@@ -224,208 +469,6 @@ public class FirstController {
 		mv.addObject("orderlist",ordS.getOrders());
 		return mv;
 	}
-	/********************************get details and add details************************/
-	
-	@PostMapping("/createcustomer")
-	public void addCustomer(Customer customer) {
-		cusS.addCustomer(customer);
-	}
-	
-	@GetMapping("/getcustomers")
-	public ModelAndView getCustomers(ModelAndView mv) {
-		mv.setViewName("Customers");
-		mv.addObject("customers",cusS.getCustomers());
-		return mv;
-	}
-	
-	@PostMapping("/editcustomer")
-	public ModelAndView editCustomer(Customer customer,ModelAndView mv) {
-		cusS.editCustomer(customer);
-		return getCustomers(mv);
-	}
-	
-	@GetMapping("/deletecustomer")
-	public ModelAndView deleteCustomer(String id, ModelAndView mv) {
-		cusS.deleteCustomer(id);
-		return getCustomers(mv);
-	}
-
-	@PostMapping("/createemployee")
-	public void addEmployee(Employee employee) {
-		empS.addEmployee(employee);
-	}
-	
-	@GetMapping("/getemployees")
-	public ModelAndView getEmployees(ModelAndView mv) {
-		mv.setViewName("Employees");
-		mv.addObject("employees",empS.getEmployees());
-		return mv;
-	}
-
-	
-	@PostMapping("/editemployee")
-	public ModelAndView editEmp(Employee emp,ModelAndView mv) {
-		empS.editEmployee(emp);
-		return getEmployees(mv);
-	}
-	
-	@GetMapping("/deleteemployee")
-	public ModelAndView deleteEmp(String id, ModelAndView mv) {
-		empS.deleteEmployee(id);
-		return getEmployees(mv);
-	}
-	
-	@PostMapping("/createrestaurant")
-	public void addRestaurant(Restaurant restaurant) {
-		resS.addRestaurant(restaurant);
-	}
-	
-	@GetMapping("/getrestaurants")
-	public ModelAndView getRestaurants(ModelAndView mv) {
-		mv.setViewName("Restaurants");
-		mv.addObject("restaurants",resS.getRestaurants());
-		return mv;
-	}
-	
-	@PostMapping("/editrestaurant")
-	public ModelAndView editRes(Restaurant res,ModelAndView mv) {
-		resS.editRestaurant(res);
-		return getRestaurants(mv);
-	}
-	
-	@GetMapping("/deleterestaurant")
-	public ModelAndView deleteRes(String id, ModelAndView mv) {
-		Set<Product> products = new HashSet<Product>(resS.getRestaurant(id).getProduct());
-		resS.deleteRestaurant(id);
-		proS.deleteProduct(products);
-		return getRestaurants(mv);
-	}
-	
-	@PostMapping("/addproduct")
-	public void addProduct(Product product,HttpServletRequest req) {
-		try {
-			String rest = getCookie(req,"restid");
-			Restaurant restaurant = resS.getRestaurant(rest);
-			restaurant.getProduct().add(product);
-			proS.addProduct(product);
-			resS.addRestaurant(restaurant);
-		}catch(Exception e) {
-			
-		}
-	}
-	
-	@PostMapping("/editproduct")
-	public ModelAndView editProduct(Product product,ModelAndView mv,HttpServletRequest req) {
-		proS.editProduct(product);
-		return getProducts(req,mv);
-	}
-	
-	@GetMapping("/deleteproduct")
-	public ModelAndView deleteProduct(int id , ModelAndView mv, HttpServletRequest req) {
-		try {
-		Restaurant rest = resS.getRestaurant(getCookie(req,"restid"));
-		Product pro = proS.getProduct(id);
-		rest.getProduct().remove(pro);
-		resS.editRestaurant(rest);
-		proS.deleteOneproduct(id);
-		}catch(Exception e) {
-			
-		}
-		return getProducts(req,mv);
-	}
-	@GetMapping("/getproducts")
-	public ModelAndView getProducts(HttpServletRequest req,ModelAndView mv) {
-		mv.setViewName("Products");
-		try {
-		String id = getCookie(req,"restid");
-		Restaurant rest = resS.getRestaurant(id);
-		mv.addObject("products",rest.getProduct());
-		}catch(Exception e) {
-		Restaurant rest = new Restaurant();
-		mv.addObject("products",rest.getProduct());
-		}
-		return mv;
-	}
-
-	@PostMapping("/customerlogin")
-	public ModelAndView cusLogin(String emailid, String upswd ,ModelAndView mv,HttpServletResponse response) {
-		Customer customer = cusS.getCustomer(emailid);
-		if(customer!=null && emailid.equals(customer.getCustomer_Id()) && upswd.equals(customer.getCustomer_Password())) {
-			mv.setViewName("welcome");
-			setCookie(response,"cusid",customer.getCustomer_Id());
-			mv.addObject("user", customer.getCustomer_Id());
-		}else {
-			mv.setViewName("rejection");
-		}
-		return mv;
-	}
-	
-	@GetMapping("/customerlogout")
-	public ModelAndView cusLogOut(HttpServletResponse response, HttpServletRequest request) {
-		deleteCookie(response,"cusid");
-		ModelAndView mv = new ModelAndView("index");
-		return mv;
-	}
-	
-	@PostMapping("/employeelogin")
-	public ModelAndView empLogin(String emailid, String upswd ,ModelAndView mv,HttpServletResponse response) {
-		Employee employee = empS.getEmployee(emailid);
-		if(employee != null && emailid.equals(employee.getEmployee_Id()) && upswd.equals(employee.getEmployee_Password())) {
-			setCookie(response,"empid",employee.getEmployee_Id());
-			employee.setActive(1);
-			empS.addEmployee(employee);
-			mv.setViewName("welcome");
-			mv.addObject("user", employee.getEmployee_Id());
-		}else {
-			mv.setViewName("rejection");
-		}
-		return mv;
-	}
-	
-	@GetMapping("/employeelogout")
-	public ModelAndView cusLogOutEmp(HttpServletResponse response, HttpServletRequest request) {
-		try {
-		String id = getCookie(request,"empid");
-		Employee emp = empS.getEmployee(id);
-		emp.setActive(0);
-		empS.addEmployee(emp);
-		}catch(Exception e){
-			
-		}
-		deleteCookie(response,"empid");
-		ModelAndView mv = new ModelAndView("index");
-		return mv;
-	}	
-	
-	@PostMapping("/restaurantlogin")
-	public ModelAndView restLogin(String emailid, String upswd ,ModelAndView mv,HttpServletResponse response) {
-		Restaurant rest = resS.getRestaurant(emailid);
-		if(rest != null && emailid.equals(rest.getRestaurant_Id()) && upswd.equals(rest.getRestaurant_Password())) {
-			setCookie(response,"restid",rest.getRestaurant_Id());
-			rest.setRestaurant_Open(1);
-			resS.addRestaurant(rest);
-			mv.setViewName("welcome");
-			mv.addObject("user", rest.getRestaurant_Id());
-		}else {
-			mv.setViewName("rejection");
-		}
-		return mv;
-	}
-	
-	@GetMapping("/restaurantlogout")
-	public ModelAndView restLogOutEmp(HttpServletResponse response, HttpServletRequest request) {
-		try {
-		String id = getCookie(request,"restid");
-		Restaurant rest = resS.getRestaurant(id);
-		rest.setRestaurant_Open(0);
-		resS.addRestaurant(rest);
-		}catch(Exception e){
-			
-		}
-		deleteCookie(response,"restid");
-		ModelAndView mv = new ModelAndView("index");
-		return mv;
-	}	
 	
 	@GetMapping("/cookiedet")
 	public void cookiedt(HttpServletRequest req) {
@@ -442,7 +485,12 @@ public class FirstController {
 		try {
 			System.out.println(getCookie(req,"restid"));
 		}catch(Exception e) {
-			System.out.println("cus excep");
+			System.out.println("rest excep");
+		}
+		try {
+			System.out.println(getCookie(req,"admin"));
+		}catch(Exception e) {
+			System.out.println("admin excep");
 		}
 	}
 }

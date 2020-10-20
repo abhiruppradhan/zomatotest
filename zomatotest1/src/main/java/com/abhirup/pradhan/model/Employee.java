@@ -16,6 +16,7 @@ public class Employee {
 	private String employee_Location;
 	private int stars;
 	private int active;
+	private int working;
 	private String employee_Password;
 	@OneToMany(mappedBy="employee")
 	private Set<OrderDet> orderdet = new HashSet<OrderDet>();
@@ -73,6 +74,12 @@ public class Employee {
 	}
 	public void setEmployee_Password(String employee_Password) {
 		this.employee_Password = employee_Password;
+	}
+	public int getWorking() {
+		return working;
+	}
+	public void setWorking(int working) {
+		this.working = working;
 	}
 	
 }

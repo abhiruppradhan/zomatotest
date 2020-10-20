@@ -1,5 +1,6 @@
 package com.abhirup.pradhan.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ public class EmployeeService {
 	private EmployeeRepo empRepo;
 	
 	public void addEmployee(Employee emp) {
+		emp.setWorking(1);
 		empRepo.save(emp);
 	}	
 	
@@ -22,19 +24,22 @@ public class EmployeeService {
 	}
 	
 	public void deleteEmployee(String id) {
-		empRepo.deleteById(id);
+		Employee emp = empRepo.getOne(id);
+		emp.setWorking(0);
+		empRepo.save(emp);
 	}
 	
 	public Employee getEmployee(String id) {
-		Employee emp = empRepo.getValueByEmployee_Id(id);
-		if(emp != null) {
-			return emp;
-		}else {
-			return null;
-		}
+		return empRepo.getOne(id);
 	}
 	
 	public List<Employee> getEmployees(){
-		return empRepo.findAll();
+		List<Employee> list = new ArrayList<Employee>();
+		for(Employee e : empRepo.findAll()) {
+			if(e.getWorking()==1) {
+				list.add(e);
+			}
+		}
+		return list;
 	}
 }

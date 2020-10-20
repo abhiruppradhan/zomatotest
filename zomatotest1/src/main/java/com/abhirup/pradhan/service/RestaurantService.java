@@ -1,5 +1,6 @@
 package com.abhirup.pradhan.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,16 @@ public class RestaurantService {
 	}
 	
 	public List<Restaurant> getRestaurants(){
-		return restRepo.findAll();
+		List<Restaurant> list = new ArrayList<Restaurant>();
+		for(Restaurant rest : restRepo.findAll()) {
+			if(rest.getActive()==1) {
+				list.add(rest);
+			}
+		}
+		return list;
 	}
 	
 	public Restaurant getRestaurant(String id) {
-		return restRepo.getValueByRestaurant_Id(id);
+		return restRepo.getOne(id);
 	}
 }

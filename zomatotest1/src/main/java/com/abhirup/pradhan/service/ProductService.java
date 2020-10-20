@@ -1,5 +1,6 @@
 package com.abhirup.pradhan.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -32,11 +33,19 @@ public class ProductService {
 	}
 	
 	public void deleteOneproduct(long id) {
-		proRepo.deleteById(id);;
+		Product p = proRepo.getOne(id);
+		p.setActive(0);
+		proRepo.save(p);
 	}
 	
 	public List<Product> getProducts(){
-		return proRepo.findAll();
+		List<Product> list = new ArrayList<Product>();
+		for (Product p : proRepo.findAll()) {
+			if(p.getActive()==1) {
+				list.add(p);
+			}
+		}
+		return list;
 	}
 	
 	public Product getProduct(long id) {

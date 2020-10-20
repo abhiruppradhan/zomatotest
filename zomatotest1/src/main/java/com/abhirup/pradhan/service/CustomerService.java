@@ -27,12 +27,7 @@ public class CustomerService {
 	}
 	
 	public Customer getCustomer(String id) {
-		Customer cus = crepo.getValueByCustomer_Id(id);
-		if(cus != null) {
-			return cus;
-		}else {
-			return null;
-		}
+		return crepo.getOne(id);
 	}
 	
 	public List<Customer> getCustomers(){

@@ -5,28 +5,31 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href = "allrestaurant" >ALL RESTAURANTS FOR ORDER</a>
+<a href = "allrestaurant" th:if="${cust}">ALL RESTAURANTS FOR ORDER</a>
 <br>
 <br>
-<a href = "CustomerLogin.html">CUSTOMER LOGIN</a><br>
-<a href = "customerlogout">CUSTOMER LOGOUT</a><br>
+<a href = "CustomerLogin.html" th:if="${!cust}">CUSTOMER LOGIN</a><br>
+<a href = "customerlogout" th:if="${cust}">CUSTOMER LOGOUT</a><br>
 <br>
-<a href = "EmployeeLogin.html">EMPLOYEE LOGIN</a><br>
-<a href = "employeelogout">EMPLOYEE LOGOUT</a><br>
+<a href = "EmployeeLogin.html" th:if="${!emp}">EMPLOYEE LOGIN</a><br>
+<a href = "employeelogout" th:if="${emp}">EMPLOYEE LOGOUT</a><br>
 <br>
-<a href = "RestaurantLogin.html">RESTAURANT LOGIN</a><br>
-<a href = "restaurantlogout">RESTAURANT LOGOUT</a><br>
+<a href = "RestaurantLogin.html" th:if="${!rest}">RESTAURANT LOGIN</a><br>
+<a href = "restaurantlogout" th:if="${rest}">RESTAURANT LOGOUT</a><br>
 <br>
 <a href = "cookiedet">cookies</a><br>
 <br>
-<a href = "EmployeeReg.html">EMPLOYEE REGISTRATION</a><br>
-<a href = "CustomerReg.html">CUSTOMER REGISTRAION</a><br>
-<a href = "RestaurantReg.html">RESTAURANT REGISTRATION</a><br>
-<a href ="ProductAdd.html">PRODUCT ADD</a><br>
+<a href = "EmployeeReg.html" th:if="${!emp}">EMPLOYEE REGISTRATION</a><br>
+<a href = "CustomerReg.html" th:if="${!cust}">CUSTOMER REGISTRAION</a><br>
+<a href = "RestaurantReg.html" th:if="${!rest}">RESTAURANT REGISTRATION</a><br>
+<a href ="ProductAdd.html" th:if="${rest}">PRODUCT ADD</a><br>
 <br>
-<a href = "getcustomers">SHOW CUSTOMERS</a><br>
-<a href = "getemployees">SHOW EMPLOYEES</a><br>
-<a href = "getrestaurants">SHOW RESTAURANTS</a><br>
-<a href = "getproducts">SHOW PRODUCTS</a><br>
+<a href="Admin.html" th:if="${!admin}">ADMIN LOGIN</a><br>
+<a href="adminlogout" th:if="${admin}">ADMIN LOGOUT</a>
+<br>
+<a href = "getcustomers" th:if="${admin}">SHOW CUSTOMERS</a><br>
+<a href = "getemployees" th:if="${admin}">SHOW EMPLOYEES</a><br>
+<a href = "getrestaurants" th:if="${admin}">SHOW RESTAURANTS</a><br>
+<a href = "getproducts" th:if="${rest}">SHOW PRODUCTS</a><br>
 </body>
 </html>
